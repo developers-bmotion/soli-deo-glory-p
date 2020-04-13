@@ -2119,10 +2119,10 @@ __webpack_require__.r(__webpack_exports__);
           peerStream.stop();
         }
 
-        this.rtc.remoteStreams = streams;
+        rtc.remoteStreams = streams;
 
-        if (id !== this.option.uid) {
-          removeView(id);
+        if (id !== resp.option.uid) {
+          resp.removeView(id);
         }
 
         console.log("peer-leave", id);
@@ -2166,10 +2166,10 @@ __webpack_require__.r(__webpack_exports__);
           remoteStream.stop();
         }
 
-        this.rtc.remoteStreams = this.rtc.remoteStreams.filter(function (stream) {
+        rtc.remoteStreams = rtc.remoteStreams.filter(function (stream) {
           return stream.getId() !== id;
         });
-        removeView(id);
+        resp.removeView(id);
         console.log("stream-removed remote-uid: ", id);
       });
       this.rtc.client.on("onTokenPrivilegeWillExpire", function () {
@@ -2239,6 +2239,8 @@ __webpack_require__.r(__webpack_exports__);
         SALIR DE LA SALA
     =============================================*/
     leave: function leave(rtc) {
+      var resp = this;
+
       if (!this.rtc.client) {
         return;
       }
@@ -2261,19 +2263,19 @@ __webpack_require__.r(__webpack_exports__);
 
         this.rtc.localStream.close();
 
-        for (var i = 0; i < this.rtc.remoteStreams.length; i++) {
-          var stream = this.rtc.remoteStreams.shift();
+        for (var i = 0; i < rtc.remoteStreams.length; i++) {
+          var stream = rtc.remoteStreams.shift();
           var id = stream.getId();
 
           if (stream.isPlaying()) {
             stream.stop();
           }
 
-          removeView(id);
+          resp.removeView(id);
         }
 
-        this.rtc.localStream = null;
-        this.rtc.remoteStreams = [];
+        rtc.localStream = null;
+        rtc.remoteStreams = [];
         this.rtc.client = null;
         console.log("client leaves channel success");
         this.rtc.published = false;
@@ -2342,7 +2344,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n#video {\n  width: 100%; \n  height: 100%; \n  position: initial !important\n}\n\n", ""]);
+exports.push([module.i, "\n#video {\n  width: 100%;\n  height: 100%;\n  position: initial !important\n}\n\n", ""]);
 
 // exports
 
@@ -32928,15 +32930,14 @@ var app = new Vue({
 /*!******************************************************************!*\
   !*** ./resources/js/social/video-conference/VideoConference.vue ***!
   \******************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _VideoConference_vue_vue_type_template_id_1dc95c6c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./VideoConference.vue?vue&type=template&id=1dc95c6c& */ "./resources/js/social/video-conference/VideoConference.vue?vue&type=template&id=1dc95c6c&");
 /* harmony import */ var _VideoConference_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./VideoConference.vue?vue&type=script&lang=js& */ "./resources/js/social/video-conference/VideoConference.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _VideoConference_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _VideoConference_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _VideoConference_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./VideoConference.vue?vue&type=style&index=0&lang=css& */ "./resources/js/social/video-conference/VideoConference.vue?vue&type=style&index=0&lang=css&");
+/* empty/unused harmony star reexport *//* harmony import */ var _VideoConference_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./VideoConference.vue?vue&type=style&index=0&lang=css& */ "./resources/js/social/video-conference/VideoConference.vue?vue&type=style&index=0&lang=css&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -32968,7 +32969,7 @@ component.options.__file = "resources/js/social/video-conference/VideoConference
 /*!*******************************************************************************************!*\
   !*** ./resources/js/social/video-conference/VideoConference.vue?vue&type=script&lang=js& ***!
   \*******************************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

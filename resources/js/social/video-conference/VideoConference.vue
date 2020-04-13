@@ -185,8 +185,8 @@ export default {
           peerStream.stop();
         }
         rtc.remoteStreams = streams;
-        if (id !== this.option.uid) {
-          removeView(id);
+        if (id !== resp.option.uid) {
+          resp.removeView(id);
         }
 
         console.log("peer-leave", id);
@@ -227,12 +227,12 @@ export default {
         if (remoteStream.isPlaying()) {
           remoteStream.stop();
         }
-        rtc.remoteStreams = this.rtc.remoteStreams.filter(function(
+        rtc.remoteStreams = rtc.remoteStreams.filter(function(
           stream
         ) {
           return stream.getId() !== id;
         });
-        removeView(id);
+        resp.removeView(id);
         console.log("stream-removed remote-uid: ", id);
       });
       this.rtc.client.on("onTokenPrivilegeWillExpire", function() {
@@ -323,6 +323,7 @@ export default {
         SALIR DE LA SALA
    =============================================*/
     leave(rtc) {
+      let resp = this;
       if (!this.rtc.client) {
         return;
       }
@@ -347,7 +348,7 @@ export default {
             if (stream.isPlaying()) {
               stream.stop();
             }
-            removeView(id);
+            resp.removeView(id);
           }
           rtc.localStream = null;
           rtc.remoteStreams = [];
