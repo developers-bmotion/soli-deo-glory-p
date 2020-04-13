@@ -184,7 +184,7 @@ export default {
         if (peerStream && peerStream.isPlaying()) {
           peerStream.stop();
         }
-        this.rtc.remoteStreams = streams;
+        rtc.remoteStreams = streams;
         if (id !== this.option.uid) {
           removeView(id);
         }
