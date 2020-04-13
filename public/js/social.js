@@ -1966,8 +1966,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "VideoConference",
@@ -2210,7 +2208,7 @@ __webpack_require__.r(__webpack_exports__);
 
           rtc.localStream = agora_rtc_sdk__WEBPACK_IMPORTED_MODULE_0___default.a.createStream({
             streamID: resp.option.uid,
-            audio: true,
+            audio: false,
             video: true,
             screen: false
             /* microphoneId: option.microphoneId,
@@ -2221,7 +2219,8 @@ __webpack_require__.r(__webpack_exports__);
           rtc.localStream.init(function () {
             console.log("init local stream success"); // play stream with html element id "local_stream"
 
-            rtc.localStream.play("local_stream"); // publish local stream
+            rtc.localStream.play("local_stream");
+            console.log(rtc.localStream.play + ""); // publish local stream
 
             resp.publish(rtc);
           }, function (err) {
@@ -2326,6 +2325,51 @@ __webpack_require__.r(__webpack_exports__);
     },
     leaveButton: function leaveButton() {
       alert("Leave");
+    },
+    "function": function _function(e, n, i) {
+      "function" == typeof n && (i = n, n = null), o["default"].debug("[".concat(t.streamId, "] play()."), e, n);
+      var a = s.b.reportApiInvoke(t.sid, {
+        name: "Stream.play",
+        options: arguments,
+        tag: "tracer",
+        callback: i
+      });
+      if (Object(W.checkValidString)(e, "elementID"), Object(W.isEmpty)(n) || (Object(W.isEmpty)(n.fit) || Object(W.checkValidEnum)(n.fit, "fit", ["cover", "contain"]), Object(W.isEmpty)(n.muted) || Object(W.checkValidBoolean)(n.muted, "muted")), t.player) o["default"].warning("[".concat(t.streamId, "] Stream.play(): Stream is already playing. Fallback to resume stream")), t.resume().then(function () {
+        a(null);
+      })["catch"](a);else {
+        t.elementID = e, t.playOptions = n, !t.local || t.video || t.screen ? (t.player = new y({
+          id: t.getId(),
+          stream: t,
+          elementID: e,
+          options: n
+        }), t.local && ge.applyEffectInPlayer(t)) : t.hasAudio() && (t.player = new y({
+          id: t.getId(),
+          stream: t,
+          elementID: e,
+          options: n
+        }));
+        var r = {
+          audio: null,
+          video: null
+        };
+        t.on("player-status-change", function e(n) {
+          if (r[n.mediaType] = n, r.audio && r.video) if (t.removeEventListener("player-status-change", e), r.video.isErrorState || r.audio.isErrorState) {
+            var i = r.video.isErrorState ? r.video : r.audio;
+            a({
+              isErrorState: !0,
+              status: i.status,
+              reason: i.reason,
+              video: r.video,
+              audio: r.audio
+            });
+          } else "aborted" === r.video.status && "aborted" === r.audio.status ? a({
+            status: "aborted",
+            reason: "stop",
+            video: r.video,
+            audio: r.audio
+          }) : a(null);
+        }), t.audioOutput && t.player.setAudioOutput(t.audioOutput), void 0 !== t.audioLevel && t.player.setAudioVolume(t.audioLevel), t._flushAudioMixingMuteStatus(!1);
+      }
     }
   }
 });
@@ -2344,7 +2388,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n#video {\n  width: 100%;\n  height: 100%;\n  position: initial !important\n}\n\n", ""]);
+exports.push([module.i, "\n#video {\n  width: 100%;\n  height: 100%;\n  position: initial !important;\n}\n.video-view {\n  transform: rotateY(180deg);\n}\n.video-placeholder {\n  height: 50vh;\n}\n", ""]);
 
 // exports
 
@@ -20681,22 +20725,20 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "col-md-7" }, [
       _c("div", { staticClass: "video-grid", attrs: { id: "video_stream" } }, [
-        _c("div", { staticClass: "video-view" }, [
-          _c("div", {
-            staticClass: "video-placeholder",
-            attrs: { id: "local_stream" }
-          }),
-          _vm._v(" "),
-          _c("div", {
-            staticClass: "video-profile show",
-            attrs: { id: "local_video_info" }
-          }),
-          _vm._v(" "),
-          _c("div", {
-            staticClass: "autoplay-fallback show",
-            attrs: { id: "video_autoplay_local" }
-          })
-        ])
+        _c("div", {
+          staticClass: "video-placeholder",
+          attrs: { id: "local_stream" }
+        }),
+        _vm._v(" "),
+        _c("div", {
+          staticClass: "video-profile show",
+          attrs: { id: "local_video_info" }
+        }),
+        _vm._v(" "),
+        _c("div", {
+          staticClass: "autoplay-fallback show",
+          attrs: { id: "video_autoplay_local" }
+        })
       ])
     ])
   }

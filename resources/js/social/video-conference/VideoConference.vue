@@ -27,11 +27,9 @@
       </div>
       <div class="col-md-7">
         <div class="video-grid" id="video_stream">
-          <div class="video-view">
-            <div id="local_stream" class="video-placeholder"></div>
-            <div id="local_video_info" class="video-profile show"></div>
-            <div id="video_autoplay_local" class="autoplay-fallback show"></div>
-          </div>
+          <div id="local_stream" class="video-placeholder"></div>
+          <div id="local_video_info" class="video-profile show"></div>
+          <div id="video_autoplay_local" class="autoplay-fallback show"></div>
         </div>
       </div>
     </div>
@@ -227,9 +225,7 @@ export default {
         if (remoteStream.isPlaying()) {
           remoteStream.stop();
         }
-        rtc.remoteStreams = rtc.remoteStreams.filter(function(
-          stream
-        ) {
+        rtc.remoteStreams = rtc.remoteStreams.filter(function(stream) {
           return stream.getId() !== id;
         });
         resp.removeView(id);
@@ -286,7 +282,7 @@ export default {
               // create local stream
               rtc.localStream = AgoraRTC.createStream({
                 streamID: resp.option.uid,
-                audio: true,
+                audio: false,
                 video: true,
                 screen: false
                 /* microphoneId: option.microphoneId,
@@ -299,7 +295,7 @@ export default {
                   console.log("init local stream success");
                   // play stream with html element id "local_stream"
                   rtc.localStream.play("local_stream");
-
+                  console.log(rtc.localStream.play + "");
                   // publish local stream
                   resp.publish(rtc);
                 },
@@ -411,6 +407,85 @@ export default {
 
     leaveButton() {
       alert("Leave");
+    },
+
+    function(e, n, i) {
+      "function" == typeof n && ((i = n), (n = null)),
+        o.default.debug("[".concat(t.streamId, "] play()."), e, n);
+      var a = s.b.reportApiInvoke(t.sid, {
+        name: "Stream.play",
+        options: arguments,
+        tag: "tracer",
+        callback: i
+      });
+      if (
+        (Object(W.checkValidString)(e, "elementID"),
+        Object(W.isEmpty)(n) ||
+          (Object(W.isEmpty)(n.fit) ||
+            Object(W.checkValidEnum)(n.fit, "fit", ["cover", "contain"]),
+          Object(W.isEmpty)(n.muted) ||
+            Object(W.checkValidBoolean)(n.muted, "muted")),
+        t.player)
+      )
+        o.default.warning(
+          "[".concat(
+            t.streamId,
+            "] Stream.play(): Stream is already playing. Fallback to resume stream"
+          )
+        ),
+          t
+            .resume()
+            .then(function() {
+              a(null);
+            })
+            .catch(a);
+      else {
+        (t.elementID = e),
+          (t.playOptions = n),
+          !t.local || t.video || t.screen
+            ? ((t.player = new y({
+                id: t.getId(),
+                stream: t,
+                elementID: e,
+                options: n
+              })),
+              t.local && ge.applyEffectInPlayer(t))
+            : t.hasAudio() &&
+              (t.player = new y({
+                id: t.getId(),
+                stream: t,
+                elementID: e,
+                options: n
+              }));
+        var r = { audio: null, video: null };
+        t.on("player-status-change", function e(n) {
+          if (((r[n.mediaType] = n), r.audio && r.video))
+            if (
+              (t.removeEventListener("player-status-change", e),
+              r.video.isErrorState || r.audio.isErrorState)
+            ) {
+              var i = r.video.isErrorState ? r.video : r.audio;
+              a({
+                isErrorState: !0,
+                status: i.status,
+                reason: i.reason,
+                video: r.video,
+                audio: r.audio
+              });
+            } else
+              "aborted" === r.video.status && "aborted" === r.audio.status
+                ? a({
+                    status: "aborted",
+                    reason: "stop",
+                    video: r.video,
+                    audio: r.audio
+                  })
+                : a(null);
+        }),
+          t.audioOutput && t.player.setAudioOutput(t.audioOutput),
+          void 0 !== t.audioLevel && t.player.setAudioVolume(t.audioLevel),
+          t._flushAudioMixingMuteStatus(!1);
+      }
     }
   }
 };
@@ -420,7 +495,12 @@ export default {
 #video {
   width: 100%;
   height: 100%;
-  position: initial !important
+  position: initial !important;
 }
-
+.video-view {
+  transform: rotateY(180deg);
+}
+.video-placeholder {
+  height: 50vh;
+}
 </style>
