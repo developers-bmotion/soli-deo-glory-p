@@ -282,7 +282,7 @@ export default {
               // create local stream
               rtc.localStream = AgoraRTC.createStream({
                 streamID: resp.option.uid,
-                audio: false,
+                audio: true,
                 video: true,
                 screen: false
                 /* microphoneId: option.microphoneId,
