@@ -227,7 +227,7 @@ export default {
         if (remoteStream.isPlaying()) {
           remoteStream.stop();
         }
-        this.rtc.remoteStreams = this.rtc.remoteStreams.filter(function(
+        rtc.remoteStreams = this.rtc.remoteStreams.filter(function(
           stream
         ) {
           return stream.getId() !== id;
@@ -341,16 +341,16 @@ export default {
           }
           // close stream
           this.rtc.localStream.close();
-          for (let i = 0; i < this.rtc.remoteStreams.length; i++) {
-            var stream = this.rtc.remoteStreams.shift();
+          for (let i = 0; i < rtc.remoteStreams.length; i++) {
+            var stream = rtc.remoteStreams.shift();
             var id = stream.getId();
             if (stream.isPlaying()) {
               stream.stop();
             }
             removeView(id);
           }
-          this.rtc.localStream = null;
-          this.rtc.remoteStreams = [];
+          rtc.localStream = null;
+          rtc.remoteStreams = [];
           this.rtc.client = null;
           console.log("client leaves channel success");
           this.rtc.published = false;
@@ -417,8 +417,8 @@ export default {
 
 <style>
 #video {
-  width: 100%; 
-  height: 100%; 
+  width: 100%;
+  height: 100%;
   position: initial !important
 }
 
