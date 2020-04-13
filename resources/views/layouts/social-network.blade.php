@@ -190,7 +190,7 @@
                     @yield('content-social')
 
                     <footer class="footer text-center text-sm-left">
-                        &copy; 2020  <span class="text-muted d-none d-sm-inline-block float-right">Creado con
+                        &copy; 2020 <span class="text-muted d-none d-sm-inline-block float-right">Creado con
                             <i class="mdi mdi-heart text-danger"></i> by Mauro</span>
                     </footer>
                 </div>
@@ -201,7 +201,7 @@
 
         </div>
     </div>
-        @include('panels.scripts')
+    @include('panels.scripts')
 </body>
 
 </html>
